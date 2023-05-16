@@ -6,6 +6,8 @@ import SelectInput from "../../components/SelectInput";
 import HistoryFinanceCard from "../../components/HistoryFinanceCard";
 import expenses from "../../repositories/expenses";
 import gains from "../../repositories/gains";
+import formatCurrecy from "../../utils/formatCurrency";
+import formatDate from "../../utils/formatDate";
 
 interface IData {
   id: string;
@@ -50,10 +52,11 @@ const List = () => {
       return {
         id: String(Math.random() * data.length),
         description: item.description,
-        amountFormatted: item.amount,
+        amountFormatted: formatCurrecy(Number(item.amount)),
+        // amountFormatted: item.amount,
         frequency: item.frequency,
-        dataFormatted: item.date,
-        tagColor: item.frequency === 'recorrente' ? "#4E41F0" : '#E44C4E',
+        dataFormatted: formatDate(item.date),
+        tagColor: item.frequency === "recorrente" ? "#4E41F0" : "#E44C4E",
       };
     });
     setData(response);
@@ -75,18 +78,15 @@ const List = () => {
       </Filters>
 
       <Content>
-        {
-          data.map(item => (
-            <HistoryFinanceCard
+        {data.map((item) => (
+          <HistoryFinanceCard
             key={item.id}
             tagColor={item.tagColor}
             title={item.description}
             subtitle={item.dataFormatted}
             amount={item.amountFormatted}
           />
-          ))
-
-        }
+        ))}
       </Content>
     </Container>
   );
